@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+
+    <context:component-scan base-package="by.goncharov.nc.constants"/>
+    <context:component-scan base-package="by.goncharov.nc.services"/>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+          p:url="jdbc:mysql://localhost:3306/FACULTYTEST"
+          p:driverClassName="com.mysql.jdbc.Driver"
+          p:username="root"
+          p:password="root"
+          p:initialSize="2"
+          p:maxTotal="3"
+    />
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+          p:dataSource-ref="dataSource">
+        <property name="packagesToScan">
+            <list>
+                <value>by.goncharov.nc.entities</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="debug">true</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">validate</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="testServiceTransactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="testServiceTransactionManager"/>
+
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="testServiceTransactionManager"/>
+    </bean>
+
+    <!-- DAO -->
+    <bean id="UserDAOHibernate" class="by.goncharov.nc.dao.impl.UserDAOHibernate">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <!-- SERVICES -->
+    <bean id="userService" class="by.goncharov.nc.services.impl.UserService">
+        <constructor-arg ref="UserDAOHibernate"/>
+    </bean>
+
+</beans>
