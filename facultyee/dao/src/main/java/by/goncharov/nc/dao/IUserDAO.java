@@ -6,7 +6,7 @@ import by.goncharov.nc.exceptions.DAOUnException;
 /**
  * Created by ivan on 02.06.2017.
  */
-public interface IUserDAO extends IDAO<Acc> {
+public interface IUserDao extends IDao<Acc> {
 
     Acc getByLogin(String login) throws DAOUnException;
 

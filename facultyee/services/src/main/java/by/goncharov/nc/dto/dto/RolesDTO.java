@@ -5,7 +5,7 @@ import by.goncharov.nc.enums.RolesType;
 /**
  * Created by ivan on 20.05.2017.
  */
-public class RolesDTO extends AbstractDTO {
+public class RolesDto extends AbstractDto {
 
     private RolesType rolesName;
 

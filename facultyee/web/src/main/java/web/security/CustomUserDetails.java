@@ -1,6 +1,6 @@
 package web.security;
 
-import by.goncharov.nc.dto.dto.UserDTO;
+import by.goncharov.nc.dto.dto.UserDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,10 +12,10 @@ import java.util.List;
 /**
  * Created by ivan on 02.06.2017.
  */
-public class CustomUserDetails extends UserDTO implements UserDetails {
+public class CustomUserDetails extends UserDto implements UserDetails {
     private final String ROLE_PREFIX = "ROLE_";
 
-    public CustomUserDetails(UserDTO user) {
+    public CustomUserDetails(UserDto user) {
         super(user);
     }
 

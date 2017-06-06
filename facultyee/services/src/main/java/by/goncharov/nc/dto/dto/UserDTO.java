@@ -4,7 +4,7 @@ package by.goncharov.nc.dto.dto;
 /**
  * Created by ivan on 20.05.2017.
  */
-public class UserDTO extends AbstractDTO {
+public class UserDto extends AbstractDto {
 
     private String firstName;
     private String lastName;
@@ -14,22 +14,16 @@ public class UserDTO extends AbstractDTO {
 
 
 
-    public UserDTO() {
+    public UserDto() {
     }
 
-    public UserDTO(int id, String httpStatus) {
-        super(id,httpStatus);
+    public UserDto(int id) {
+        super(id);
     }
 
-//    public UserDTO(int id, String firstName, String lastName, String login,  String password) {
-//        super.setId(id);
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.login = login;
-//        this.password = password;
-//    }
 
-    public UserDTO(UserDTO user) {
+
+    public UserDto(UserDto user) {
         super(user.getId());
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
@@ -86,7 +80,7 @@ public class UserDTO extends AbstractDTO {
 
     @Override
     public String toString() {
-        return "UserDTO{" +
+        return "UserDto{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", login='" + login + '\'' +

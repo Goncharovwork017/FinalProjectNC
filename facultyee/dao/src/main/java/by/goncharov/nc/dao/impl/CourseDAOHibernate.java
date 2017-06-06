@@ -2,7 +2,7 @@ package by.goncharov.nc.dao.impl;
 
 import by.goncharov.nc.abstracts.AbstractDAO;
 import by.goncharov.nc.constants.Queries;
-import by.goncharov.nc.dao.ICourseDAO;
+import by.goncharov.nc.dao.ICourseDao;
 import by.goncharov.nc.entities.Course;
 import by.goncharov.nc.exceptions.DAOUnException;
 import org.apache.log4j.Logger;
@@ -19,55 +19,54 @@ import java.util.List;
  * Created by ivan on 02.06.2017.
  */
 @Repository
-public class CourseDAOHibernate extends AbstractDAO<Course> implements ICourseDAO {
+public class CourseDaoHibernate extends AbstractDAO<Course> implements ICourseDao {
 
-    private static final Logger logger = Logger.getLogger(CourseDAOHibernate.class);
+    private static final Logger logger = Logger.getLogger(CourseDaoHibernate.class);
 
 
     @Autowired
-    public CourseDAOHibernate(SessionFactory sessionFactory) {
+    public CourseDaoHibernate(SessionFactory sessionFactory) {
         super(Course.class, sessionFactory);
     }
 
     @Override
+    public Course getByName(String name) throws DAOUnException {
+        Course course;
+        try{
+            Session session = getCurrentSession();
+             Query query = session.createQuery(Queries.GET_BY_COURSE_NAME);
+            query.setParameter("name", name);
+            course = (Course) query.uniqueResult();
+        } catch (Exception e) {
+        logger.error("Unable to return name." + e);
+        throw new DAOUnException("Unable to return name." + e);
+    }
+        return course;
+    }
+
+
+
+
+    @Override
     public List<Course> getAllCourseByUserId(int id) {
-        List<Course> cards = null;
+        List<Course> cor = null;
         try{
             Session session = getCurrentSession();
             Query query = session.createQuery(Queries.GET_BY_USERID);
-            query.setParameter("UserID", id);
+            query.setParameter("id", id);
+
+
         } catch (HibernateException e) {
             logger.error("Error was thrown in DAO" + e);
             throw new DAOUnException();
         }
-        return cards;
+        return cor;
     }
 
-    @Override
-    public void startedCourse(Course course) {
-        try{
-            course.setStatus(true);
-            Session session = getCurrentSession();
-            session.merge(course);
-        } catch (HibernateException e) {
-            logger.error("Error was thrown in CourseDAOHibernate method startedCourse: " + e);
-            throw new DAOUnException(e);
-        }
-    }
 
-    @Override
-    public void endedCourse(Course course) {
-        try{
-            course.setStatus(false);
-            Session session = getCurrentSession();
-            session.merge(course);
-        } catch (HibernateException e) {
-            logger.error("Error was thrown in CourseDAOHibernate method startedCourse: " + e);
-            throw new DAOUnException(e);
-        }
 
 
 
 
     }
-}
+

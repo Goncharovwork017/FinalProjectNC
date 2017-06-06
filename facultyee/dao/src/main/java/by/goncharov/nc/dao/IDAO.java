@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by ivan on 02.06.2017.
  */
-public interface IDAO <T extends AbstractEntity>  {
+public interface IDao<T extends AbstractEntity>  {
 
     List<T> getAll();
 

@@ -1,0 +1,14 @@
+web\controllers\responses\FailedResponse.class
+web\controllers\exceptionhandler\DefaultExceptionHandler.class
+web\security\handlers\UnAuthLoginHandler.class
+web\DemoApplication.class
+web\controllers\exceptions\NoReadsException.class
+web\controllers\usercontrollers\AllController.class
+web\security\CustomUserDetails.class
+web\security\CustomUserDetailsService.class
+web\security\SecurityConfig.class
+web\controllers\usercontrollers\AdminController.class
+web\security\handlers\LogoutHandler.class
+web\HomeController.class
+web\controllers\usercontrollers\StudentController.class
+web\controllers\responses\SuccessResponse.class

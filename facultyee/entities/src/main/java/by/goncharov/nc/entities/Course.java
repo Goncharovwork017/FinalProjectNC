@@ -1,7 +1,5 @@
 package by.goncharov.nc.entities;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 
 
@@ -18,7 +16,7 @@ public class Course extends AbstractEntity {
     private String name;
     private Acc acc;
     private String courseDescription;
-    private boolean status;
+    private String status;
 
     public Course() {
     }
@@ -43,7 +41,7 @@ public class Course extends AbstractEntity {
     }
 
 //
-    @ManyToOne( fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "UserID")
     public Acc getAcc() {
         return acc;
@@ -63,11 +61,12 @@ public class Course extends AbstractEntity {
     }
 
     @Column(nullable = false, name = ("Status"))
-    @ColumnDefault("true")
-    public boolean isStatus() {
+
+    public String getStatus() {
         return status;
     }
-    public void setStatus(boolean status) {
+
+    public void setStatus(String status) {
         this.status = status;
     }
 }

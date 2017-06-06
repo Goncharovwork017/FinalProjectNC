@@ -1,12 +1,13 @@
 package by.goncharov.nc.service.impl;
 
 import by.goncharov.nc.constants.ServiceConstants;
-import by.goncharov.nc.dao.IUserDAO;
+import by.goncharov.nc.dao.IUserDao;
 import by.goncharov.nc.dto.converters.Converter;
-import by.goncharov.nc.dto.dto.UserDTO;
+import by.goncharov.nc.dto.dto.UserDto;
 import by.goncharov.nc.entities.Acc;
 import by.goncharov.nc.exceptions.DAOUnException;
 import by.goncharov.nc.exceptions.ExistUserException;
+import by.goncharov.nc.exceptions.IncorrectPasswordException;
 import by.goncharov.nc.exceptions.NotFoundException;
 import by.goncharov.nc.service.IUserService;
 import org.apache.log4j.Logger;
@@ -26,32 +27,34 @@ import java.util.List;
 @Transactional
 public class UserServiceImpl implements IUserService {
 
-
-    private IUserDAO userDAO;
+    @Autowired
+    private IUserDao userDAO;
     private static Logger logger = Logger.getLogger(UserServiceImpl.class);
 
 
 
 
     @Autowired
-    public UserServiceImpl(IUserDAO userDAO) {
+    public UserServiceImpl(IUserDao userDAO) {
         this.userDAO = userDAO;
     }
 
 
     @Override
-    public UserDTO getByLogin(String login) {
+    public UserDto getByLogin(String login) {
         Acc user = null;
-        UserDTO userDTO = null;
+        UserDto userDto = null;
         try {
             user = userDAO.getByLogin(login);
-            if (user != null)
-                userDTO = Converter.userToUserDto(user);
+            if (user == null) {
+                throw new NotFoundException("User not found!");
+            }else
+            userDto = Converter.userToUserDto(user);
             logger.info(ServiceConstants.TRANSACTION_SUCCEEDED);
         } catch (ServiceException e) {
             logger.error(ServiceConstants.TRANSACTION_FAILED, e);
         }
-        return userDTO;
+        return userDto;
     }
 
 
@@ -76,8 +79,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public int registration(UserDTO userDTO) {
-        Acc acc = Converter.userDtoToUser(userDTO);
+    public int registration(UserDto userDto) {
+        Acc acc = Converter.userDtoToUser(userDto);
         int id = 0;
         try {
             id = userDAO.save(acc);
@@ -89,18 +92,30 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<UserDTO> getAll() {
+    public int login(UserDto userDto) {
+        Acc user = userDAO.getByLogin(userDto.getLogin());
+        if (user == null) {
+            throw new NotFoundException("User not found!");
+        } else if (!user.getPassword().equals(userDto.getPassword())) {
+            throw new IncorrectPasswordException("Incorrect password entered!");
+        } else {
+            return user.getId();
+        }
+    }
+
+    @Override
+    public List<UserDto> getAll() {
         List<Acc> users = null;
-        UserDTO userDTO = null;
-        List<UserDTO> usersDto = new ArrayList<UserDTO>();
+        UserDto userDto = null;
+        List<UserDto> usersDto = new ArrayList<UserDto>();
         if (logger.isDebugEnabled()) {
             logger.debug(ServiceConstants.TRANSACTION_DEBUG);
         }
         try {
             users = userDAO.getAll();
             for (Acc user : users) {
-                userDTO = Converter.userToUserDto(user);
-                usersDto.add(userDTO);
+                userDto = Converter.userToUserDto(user);
+                usersDto.add(userDto);
             }
             logger.info(ServiceConstants.TRANSACTION_SUCCEEDED);
         } catch (ServiceException e) {
@@ -110,12 +125,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public int save(UserDTO userDTO) {
-        Acc user = Converter.userDtoToUser(userDTO);
+    public int save(UserDto userDto) {
+        Acc user = Converter.userDtoToUser(userDto);
         int id = 0;
         try {
-            //TODO проверить как работает
-
             Acc actuUser = userDAO.getByLogin(user.getLogin());
             if(actuUser != null) {
                 throw new ExistUserException("Such user is already exists!");
@@ -130,26 +143,26 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserDTO getById(int id) {
+    public UserDto getById(int id) {
         Acc user = null;
-        UserDTO userDTO = null;
+        UserDto userDto = null;
         try {
 
             user = userDAO.getById(id);
             if(user == null){
                 throw new NotFoundException("User not found!");
             }
-                userDTO = Converter.userToUserDto(user);
+                userDto = Converter.userToUserDto(user);
             logger.info(ServiceConstants.TRANSACTION_SUCCEEDED);
         } catch (ServiceException e) {
             logger.error(ServiceConstants.TRANSACTION_FAILED, e);
         }
-        return userDTO;
+        return userDto;
     }
 
     @Override
-    public void update(UserDTO userDTO) {
-        Acc user = Converter.userDtoToUser(userDTO);
+    public void update(UserDto userDto) {
+        Acc user = Converter.userDtoToUser(userDto);
         try {
             Acc actualUser = userDAO.getById(user.getId());
             if(actualUser == null){

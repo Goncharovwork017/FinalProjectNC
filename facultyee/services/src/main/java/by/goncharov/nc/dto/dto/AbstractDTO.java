@@ -3,21 +3,17 @@ package by.goncharov.nc.dto.dto;
 /**
  * Created by ivan on 20.05.2017.
  */
-public abstract class AbstractDTO {
+public abstract class AbstractDto {
 
 
 
     protected int id;
-    private String httpStatus;
-    public AbstractDTO() {
+    public AbstractDto() {
     }
 
-    public AbstractDTO(int id, String httpStatus) {
-        this.id = id;
-        this.httpStatus = httpStatus;
-    }
 
-    public AbstractDTO(int id) {
+
+    public AbstractDto(int id) {
         this.id = id;
     }
 
@@ -29,11 +25,7 @@ public abstract class AbstractDTO {
         this.id = id;
     }
 
-    public String getHttpStatus() {
-        return httpStatus;
+
+
     }
 
-    public void setHttpStatus(String httpStatus) {
-        this.httpStatus = httpStatus;
-    }
-}

@@ -1,10 +1,9 @@
 package by.goncharov.nc.dto.converters;
 
 
-import by.goncharov.nc.dto.dto.CourseDTO;
-import by.goncharov.nc.dto.dto.SheetListDTO;
-import by.goncharov.nc.dto.dto.UserALLDTO;
-import by.goncharov.nc.dto.dto.UserDTO;
+import by.goncharov.nc.dto.dto.CourseDto;
+import by.goncharov.nc.dto.dto.SheetListDto;
+import by.goncharov.nc.dto.dto.UserDto;
 import by.goncharov.nc.entities.Acc;
 import by.goncharov.nc.entities.Course;
 import by.goncharov.nc.entities.Roles;
@@ -17,33 +16,13 @@ import by.goncharov.nc.enums.RolesType;
 public class Converter {
 
 
-    public static Acc userAllDtoToUser(UserALLDTO userALLDTO)
-    {
+    public static Acc userDtoToUser(UserDto userDto) {
         Acc acc = new Acc();
-        acc.setId(userALLDTO.getId());
-        acc.setFirstName(userALLDTO.getFirstName());
-        acc.setLastName(userALLDTO.getLastName());
-        acc.setLogin(userALLDTO.getLogin());
-        return acc;
-    }
-
-
-    public static UserALLDTO usetToUserALLDTO(Acc acc){
-        UserALLDTO userDTO = new UserALLDTO();
-        userDTO.setId(acc.getId());
-        userDTO.setFirstName(acc.getFirstName());
-        userDTO.setLastName(acc.getLastName());
-        userDTO.setLogin(acc.getLogin());
-        return userDTO;
-    }
-
-    public static Acc userDtoToUser(UserDTO userDTO) {
-        Acc acc = new Acc();
-        acc.setId(userDTO.getId());
-        acc.setFirstName(userDTO.getFirstName());
-        acc.setLastName(userDTO.getLastName());
-        acc.setLogin(userDTO.getLogin());
-        acc.setPassword(userDTO.getPassword());
+        acc.setId(userDto.getId());
+        acc.setFirstName(userDto.getFirstName());
+        acc.setLastName(userDto.getLastName());
+        acc.setLogin(userDto.getLogin());
+        acc.setPassword(userDto.getPassword());
         Roles roles = new Roles();
         roles.setId(2);
         roles.setRolesName(RolesType.STUDENT);
@@ -52,30 +31,30 @@ public class Converter {
         return acc;
     }
 
-    public static UserDTO userToUserDto(Acc acc) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(acc.getId());
-        userDTO.setFirstName(acc.getFirstName());
-        userDTO.setLastName(acc.getLastName());
-        userDTO.setLogin(acc.getLogin());
-        userDTO.setPassword(acc.getPassword());
-        userDTO.setRoles(String.valueOf(acc.getRoles().getRolesName()));
-        return userDTO;
+    public static UserDto userToUserDto(Acc acc) {
+        UserDto userDto = new UserDto();
+        userDto.setId(acc.getId());
+        userDto.setFirstName(acc.getFirstName());
+        userDto.setLastName(acc.getLastName());
+        userDto.setLogin(acc.getLogin());
+        userDto.setPassword(acc.getPassword());
+        userDto.setRoles(String.valueOf(acc.getRoles().getRolesName()));
+        return userDto;
     }
 
 
 
 
 
-    public static Course courseDtoToCourse(CourseDTO courseDTO){
+    public static Course courseDtoToCourse(CourseDto courseDto){
         Course course = new Course();
-        course.setId(courseDTO.getId());
-        course.setName(courseDTO.getName());
-        course.setCourseDescription(courseDTO.getCourseDescription());
-        course.setStatus(courseDTO.isStatus());
+        course.setId(courseDto.getId());
+        course.setName(courseDto.getName());
+        course.setCourseDescription(courseDto.getCourseDescription());
+        course.setStatus(courseDto.getStatus());
 
         Acc user = new Acc();
-        user.setId(courseDTO.getUser());
+        user.setId(courseDto.getUser());
         course.setAcc(user);
 
 
@@ -83,52 +62,52 @@ public class Converter {
 
     }
 
-    public static CourseDTO courseToCourseDto(Course course){
+    public static CourseDto courseToCourseDto(Course course){
 
-        CourseDTO courseDTO = new CourseDTO();
-        courseDTO.setId(course.getId());
-        courseDTO.setName(course.getName());
+        CourseDto courseDto = new CourseDto();
+        courseDto.setId(course.getId());
+        courseDto.setName(course.getName());
 
-        courseDTO.setUser(course.getAcc().getId());
+        courseDto.setUser(course.getAcc().getId());
 
-        courseDTO.setCourseDescription(course.getCourseDescription());
-        courseDTO.setStatus(course.isStatus());
+        courseDto.setCourseDescription(course.getCourseDescription());
+        courseDto.setStatus(course.getStatus());
 
-        return  courseDTO;
+        return courseDto;
 
     }
 
 
 
-    public static SheetList sheetDtoToSheet(SheetListDTO sheetListDTO){
+    public static SheetList sheetDtoToSheet(SheetListDto sheetListDto){
         SheetList sheetList = new SheetList();
-        sheetList.setId(sheetListDTO.getId());
-        sheetList.setScore(sheetListDTO.getScore());
-        sheetList.setShortComment(sheetListDTO.getShortComment());
+        sheetList.setId(sheetListDto.getId());
+        sheetList.setScore(sheetListDto.getScore());
+        sheetList.setShortComment(sheetListDto.getShortComment());
 
         Acc user = new Acc();
-        user.setId(sheetListDTO.getUser());
+        user.setId(sheetListDto.getUser());
         sheetList.setAcc(user);
 
         Course course = new Course();
-        course.setId(sheetListDTO.getCourse());
+        course.setId(sheetListDto.getCourse());
         sheetList.setCourse(course);
 
         return  sheetList;
     }
 
 
-    public static SheetListDTO sheetToSheetDto(SheetList sheetList){
-        SheetListDTO sheetListDTO = new SheetListDTO();
-        sheetListDTO.setId(sheetList.getId());
-        sheetListDTO.setScore(sheetList.getScore());
-        sheetListDTO.setShortComment(sheetList.getShortComment());
+    public static SheetListDto sheetToSheetDto(SheetList sheetList){
+        SheetListDto sheetListDto = new SheetListDto();
+        sheetListDto.setId(sheetList.getId());
+        sheetListDto.setScore(sheetList.getScore());
+        sheetListDto.setShortComment(sheetList.getShortComment());
 
-        sheetListDTO.setUser(sheetList.getAcc().getId());
+        sheetListDto.setUser(sheetList.getAcc().getId());
 
-        sheetListDTO.setCourse(sheetList.getCourse().getId());
+        sheetListDto.setCourse(sheetList.getCourse().getId());
 
-        return sheetListDTO;
+        return sheetListDto;
     }
 
 

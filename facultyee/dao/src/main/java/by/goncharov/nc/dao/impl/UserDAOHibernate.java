@@ -2,7 +2,7 @@ package by.goncharov.nc.dao.impl;
 
 import by.goncharov.nc.abstracts.AbstractDAO;
 import by.goncharov.nc.constants.Queries;
-import by.goncharov.nc.dao.IUserDAO;
+import by.goncharov.nc.dao.IUserDao;
 import by.goncharov.nc.entities.Acc;
 import by.goncharov.nc.exceptions.DAOUnException;
 import org.apache.log4j.Logger;
@@ -20,12 +20,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Repository
-public class UserDAOHibernate extends AbstractDAO<Acc> implements IUserDAO {
+public class UserDaoHibernate extends AbstractDAO<Acc> implements IUserDao {
 
-    private static final Logger logger = Logger.getLogger(UserDAOHibernate.class);
+    private static final Logger logger = Logger.getLogger(UserDaoHibernate.class);
 
     @Autowired
-    public UserDAOHibernate(SessionFactory sessionFactory) {
+    public UserDaoHibernate(SessionFactory sessionFactory) {
         super(Acc.class, sessionFactory);
     }
 

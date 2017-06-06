@@ -4,7 +4,10 @@ package by.goncharov.nc.constants;
 public class Queries {
 
 
-    public static String GET_BY_USERID = "from Acc where UserID = :UserID";
+    public static String getSheetByCourseIdAndUserId = "from SheetList where courseid = :courseid and userid = :userid";
+    public static String GET_ALL_COURSE_START = "FROM Course where status = :status";
+    public static String GET_BY_COURSE_NAME = "from Course where name = :name";
+    public static String GET_BY_USERID = "from Sheetlist where userid = :userid";
     public static String GET_BY_LOGIN = "from Acc where login = :login";
     public static String CHECK_AUTHORIZATION = "from Acc where login = :login and password = :password";
     public static String REG = "from Acc where login = :login";

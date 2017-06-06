@@ -3,27 +3,27 @@ package by.goncharov.nc.dto.dto;
 /**
  * Created by ivan on 20.05.2017.
  */
-public class CourseDTO extends AbstractDTO {
+public class CourseDto extends AbstractDto {
 
 
     private String name;
     private int user;
     private String courseDescription;
-    private boolean status;
+    private String status;
 
-    public CourseDTO() {
+    public CourseDto() {
     }
 
-    public CourseDTO(String name, int user, String courseDescription, boolean status) {
+    public CourseDto(String name, int user, String courseDescription, String status) {
         this.name = name;
         this.user = user;
         this.courseDescription = courseDescription;
         this.status = status;
     }
 
-    public CourseDTO(int id, String httpStatus) {
-        super(id, httpStatus);
-    }
+
+
+
 
     public String getName() {
         return name;
@@ -49,17 +49,18 @@ public class CourseDTO extends AbstractDTO {
         this.courseDescription = courseDescription;
     }
 
-    public boolean isStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
+
     @Override
     public String toString() {
-        return "CourseDTO{" +
+        return "CourseDto{" +
                 "name='" + name + '\'' +
                 ", user=" + user +
                 ", courseDescription='" + courseDescription + '\'' +

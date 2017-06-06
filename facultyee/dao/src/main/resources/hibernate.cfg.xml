@@ -8,12 +8,8 @@
 <hibernate-configuration>
     <session-factory>
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
-
-
         <property name="show_sql">true</property>
-
         <property name="hibernate.hbm2ddl.auto">validate</property>
-
         <mapping class="by.goncharov.nc.entities.Acc"/>
         <mapping class="by.goncharov.nc.entities.Course"/>
         <mapping class="by.goncharov.nc.entities.SheetList"/>

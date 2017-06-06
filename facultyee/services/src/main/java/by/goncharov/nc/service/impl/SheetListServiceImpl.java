@@ -1,9 +1,10 @@
 package by.goncharov.nc.service.impl;
 
 import by.goncharov.nc.constants.ServiceConstants;
-import by.goncharov.nc.dao.ISheetListDAO;
+import by.goncharov.nc.dao.ICourseDao;
+import by.goncharov.nc.dao.ISheetListDao;
 import by.goncharov.nc.dto.converters.Converter;
-import by.goncharov.nc.dto.dto.SheetListDTO;
+import by.goncharov.nc.dto.dto.SheetListDto;
 import by.goncharov.nc.entities.SheetList;
 import by.goncharov.nc.exceptions.NotFoundException;
 import by.goncharov.nc.service.ISheetListService;
@@ -26,39 +27,41 @@ public class SheetListServiceImpl implements ISheetListService {
 
 
     @Autowired
-    private ISheetListDAO sheetListDAO;
-
+    private ISheetListDao sheetListDAO;
 
     @Autowired
-    public SheetListServiceImpl(ISheetListDAO sheetListDAO) {
+    private ICourseDao courseDAO;
+
+    @Autowired
+    public SheetListServiceImpl(ISheetListDao sheetListDAO) {
 
         this.sheetListDAO = sheetListDAO;
     }
 
     @Override
-    public List<SheetListDTO> getAll() {
+    public List<SheetListDto> getAll() {
         List<SheetList> sheetLists = null;
-        SheetListDTO sheetListDTO = null;
-        List<SheetListDTO> sheetListDTOS = new ArrayList<SheetListDTO>();
+        SheetListDto sheetListDto = null;
+        List<SheetListDto> sheetListDtos = new ArrayList<SheetListDto>();
         if (logger.isDebugEnabled()) {
             logger.debug(ServiceConstants.TRANSACTION_DEBUG);
         }
         try {
             sheetLists = sheetListDAO.getAll();
             for (SheetList sheet : sheetLists) {
-                sheetListDTO = Converter.sheetToSheetDto(sheet);
-                sheetListDTOS.add(sheetListDTO);
+                sheetListDto = Converter.sheetToSheetDto(sheet);
+                sheetListDtos.add(sheetListDto);
             }
             logger.info(ServiceConstants.TRANSACTION_SUCCEEDED);
         } catch (ServiceException e) {
             logger.error(ServiceConstants.TRANSACTION_FAILED, e);
         }
-        return sheetListDTOS;
+        return sheetListDtos;
     }
 
     @Override
-    public int save(SheetListDTO sheetListDTO) {
-        SheetList sheetList = Converter.sheetDtoToSheet(sheetListDTO);
+    public int save(SheetListDto sheetListDto) {
+        SheetList sheetList = Converter.sheetDtoToSheet(sheetListDto);
         int id = 0;
         try {
             id = sheetListDAO.save(sheetList);
@@ -70,9 +73,9 @@ public class SheetListServiceImpl implements ISheetListService {
     }
 
     @Override
-    public SheetListDTO getById(int id) {
+    public SheetListDto getById(int id) {
         SheetList sheetList = null;
-        SheetListDTO sheetListDTO = null;
+        SheetListDto sheetListDto = null;
         try {
 
             sheetList = sheetListDAO.getById(id);
@@ -80,17 +83,17 @@ public class SheetListServiceImpl implements ISheetListService {
             if (sheetList == null){
                 throw new NotFoundException("SheetList not found!");
             }
-                sheetListDTO = Converter.sheetToSheetDto(sheetList);
+                sheetListDto = Converter.sheetToSheetDto(sheetList);
             logger.info(ServiceConstants.TRANSACTION_SUCCEEDED);
         } catch (ServiceException e) {
             logger.error(ServiceConstants.TRANSACTION_FAILED, e);
         }
-        return sheetListDTO;
+        return sheetListDto;
     }
 
     @Override
-    public void update(SheetListDTO sheetListDTO) {
-        SheetList sheetList = Converter.sheetDtoToSheet(sheetListDTO);
+    public void update(SheetListDto sheetListDto) {
+        SheetList sheetList = Converter.sheetDtoToSheet(sheetListDto);
         try {
 
                 SheetList actulSheet = sheetListDAO.getById(sheetList.getId());
@@ -109,7 +112,7 @@ public class SheetListServiceImpl implements ISheetListService {
         try {
             SheetList sheetList = sheetListDAO.getById(id);
             if(sheetList == null){
-                throw new NotFoundException("User not found!");
+                throw new NotFoundException("SheetList not found!");
             }
             sheetListDAO.delete(id);
             logger.info(ServiceConstants.TRANSACTION_SUCCEEDED);
@@ -117,4 +120,44 @@ public class SheetListServiceImpl implements ISheetListService {
             logger.error(ServiceConstants.TRANSACTION_FAILED, e);
         }
     }
+
+    @Override
+    public SheetListDto getAllSheetByUserId(int id) {
+        SheetList sheet = null;
+        SheetListDto sheetDto = null;
+        try{
+            sheet = sheetListDAO.getById(id);
+            //if(sheet != null)
+                if(sheet == null){
+                    throw new NotFoundException("Please, add to course!");
+                }
+                sheetDto = Converter.sheetToSheetDto(sheet);
+            logger.info(ServiceConstants.TRANSACTION_SUCCEEDED);
+        } catch (ServiceException e) {
+            logger.error(ServiceConstants.TRANSACTION_FAILED, e);
+        }
+
+    return  sheetDto;
+    }
+
+    @Override
+    public SheetListDto getSheetByCourseIdAndUserId(int courseId, int userId) {
+        SheetList sheet = null;
+        SheetListDto sheetListDto = null;
+        try{
+
+            sheet = sheetListDAO.getSheetByCourseIdAndUserId(courseId,userId);
+            if(sheet != null) {
+                sheetListDto = Converter.sheetToSheetDto(sheet);
+                logger.info(ServiceConstants.TRANSACTION_SUCCEEDED);
+            }
+        } catch (ServiceException e) {
+            logger.error(ServiceConstants.TRANSACTION_FAILED, e);
+        }
+        return  sheetListDto;
+    }
+
+
+
+
 }

@@ -1,7 +1,7 @@
 package by.goncharov.nc.abstracts;
 
 
-import by.goncharov.nc.dao.IDAO;
+import by.goncharov.nc.dao.IDao;
 import by.goncharov.nc.entities.AbstractEntity;
 import by.goncharov.nc.exceptions.DAOUnException;
 import org.apache.log4j.Logger;
@@ -19,7 +19,7 @@ import java.util.List;
 
 
 @SuppressWarnings("unchecked")
-public class AbstractDAO <T extends AbstractEntity> implements IDAO<T> {
+public class AbstractDAO <T extends AbstractEntity> implements IDao<T> {
 
 
     private static Logger logger = Logger.getLogger(AbstractDAO.class);
@@ -62,6 +62,8 @@ public class AbstractDAO <T extends AbstractEntity> implements IDAO<T> {
         try {
             Session session = getCurrentSession();
             session.save(entity);
+            entity.getId();
+
             id = (Integer) session.getIdentifier(entity);
         } catch (HibernateException e){
             logger.error("Error was thrown in DAO" + e);

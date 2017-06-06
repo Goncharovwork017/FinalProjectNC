@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 /**
  * Created by ivan on 02.06.2017.
@@ -16,8 +18,23 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-    @Autowired
+
     private UserDetailsService userDetailsService;
+    private LogoutSuccessHandler logoutSuccessHandler;
+    private AuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    public SecurityConfig(
+            AuthenticationEntryPoint authenticationEntryPoint,
+            UserDetailsService userDetailsService,
+            LogoutSuccessHandler logoutSuccessHandler
+    ) {
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.userDetailsService = userDetailsService;
+        this.logoutSuccessHandler = logoutSuccessHandler;
+    }
+
+
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
@@ -28,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login").anonymous()
+//                .antMatchers("/login").anonymous()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
               //  .antMatchers("/users/*").permitAll()
@@ -44,7 +61,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
+                .logoutSuccessHandler(logoutSuccessHandler)
                 .permitAll()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
                 .csrf()
                 .disable();

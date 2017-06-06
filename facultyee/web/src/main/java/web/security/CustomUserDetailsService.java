@@ -1,6 +1,6 @@
 package web.security;
 
-import by.goncharov.nc.dto.dto.UserDTO;
+import by.goncharov.nc.dto.dto.UserDto;
 import by.goncharov.nc.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        UserDTO user = userService.getByLogin(login);
+        UserDto user = userService.getByLogin(login);
         if (user != null) {
             return new CustomUserDetails(user);
         } else {

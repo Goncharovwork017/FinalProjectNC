@@ -1,0 +1,7 @@
+by\goncharov\nc\entities\Roles.class
+by\goncharov\nc\entities\Course.class
+by\goncharov\nc\entities\Acc.class
+by\goncharov\nc\entities\AbstractEntity.class
+by\goncharov\nc\enums\RolesType.class
+by\goncharov\nc\entities\SheetList.class
+by\goncharov\nc\utils\EntityBuilder.class

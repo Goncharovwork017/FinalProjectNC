@@ -3,7 +3,7 @@ package by.goncharov.nc.dto.dto;
 /**
  * Created by ivan on 20.05.2017.
  */
-public class SheetListDTO extends AbstractDTO {
+public class SheetListDto extends AbstractDto {
 
 
     private int user;
@@ -12,12 +12,12 @@ public class SheetListDTO extends AbstractDTO {
     public int course;
 
 
-    public int score;
+    public int score = 0;
 
 
-    public String shortComment;
+    public String shortComment = null;
 
-    public SheetListDTO() {
+    public SheetListDto() {
     }
 
     public int getUser() {
@@ -55,7 +55,7 @@ public class SheetListDTO extends AbstractDTO {
 
     @Override
     public String toString() {
-        return "SheetListDTO{" +
+        return "SheetListDto{" +
                 "user=" + user +
                 ", course=" + course +
                 ", score=" + score +

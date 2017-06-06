@@ -16,7 +16,7 @@
       <module name="dao" target="1.6" />
       <module name="entities" target="1.6" />
       <module name="facultyee" target="1.6" />
-      <module name="services" target="1.7" />
+      <module name="services" target="1.6" />
       <module name="web" target="1.7" />
     </bytecodeTargetLevel>
   </component>

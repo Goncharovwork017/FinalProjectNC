@@ -1,11 +1,10 @@
 package by.goncharov.nc.service.impl;
 
 import by.goncharov.nc.constants.ServiceConstants;
-import by.goncharov.nc.dao.ICourseDAO;
+import by.goncharov.nc.dao.ICourseDao;
 import by.goncharov.nc.dto.converters.Converter;
-import by.goncharov.nc.dto.dto.CourseDTO;
+import by.goncharov.nc.dto.dto.CourseDto;
 import by.goncharov.nc.entities.Course;
-import by.goncharov.nc.exceptions.DAOUnException;
 import by.goncharov.nc.exceptions.NotFoundException;
 import by.goncharov.nc.service.ICourseService;
 import org.apache.log4j.Logger;
@@ -26,41 +25,41 @@ public class CourseServiceImpl implements ICourseService {
 
     private static Logger logger = Logger.getLogger(CourseServiceImpl.class);
 
-
-    private ICourseDAO courseDAO;
+@Autowired
+    private ICourseDao courseDAO;
 
 
     @Autowired
-    protected CourseServiceImpl(ICourseDAO courseDAO) {
+    protected CourseServiceImpl(ICourseDao courseDAO) {
 
         this.courseDAO = courseDAO;
     }
 
     @Override
-    public List<CourseDTO> getAll() {
+    public List<CourseDto> getAll() {
         List<Course> courses = null;
-        CourseDTO courseDTO = null;
-        List<CourseDTO> courseDTOS = new ArrayList<CourseDTO>();
+        CourseDto courseDto = null;
+        List<CourseDto> courseDtos = new ArrayList<CourseDto>();
         if (logger.isDebugEnabled()) {
             logger.debug(ServiceConstants.TRANSACTION_DEBUG);
         }
         try {
             courses = courseDAO.getAll();
             for (Course course : courses){
-                courseDTO = Converter.courseToCourseDto(course);
-                courseDTOS.add(courseDTO);
+                courseDto = Converter.courseToCourseDto(course);
+                courseDtos.add(courseDto);
             }
             logger.info(ServiceConstants.TRANSACTION_SUCCEEDED);
         } catch (ServiceException e) {
             logger.error(ServiceConstants.TRANSACTION_FAILED, e);
         }
 
-        return courseDTOS;
+        return courseDtos;
     }
 
     @Override
-    public int save(CourseDTO courseDTO) {
-        Course course = Converter.courseDtoToCourse(courseDTO);
+    public int save(CourseDto courseDto) {
+        Course course = Converter.courseDtoToCourse(courseDto);
         int id = 0;
         try{
             id = courseDAO.save(course);
@@ -72,27 +71,28 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
-    public CourseDTO getById(int id) {
+    public CourseDto getById(int id) {
         Course course = null;
-        CourseDTO courseDTO = null;
+        CourseDto courseDto = null;
         try{
             course = courseDAO.getById(id);
             if(course == null){
                 throw new NotFoundException("Course not found!");
             }
-                courseDTO = Converter.courseToCourseDto(course);
+                courseDto = Converter.courseToCourseDto(course);
             logger.info(ServiceConstants.TRANSACTION_SUCCEEDED);
         } catch (ServiceException e) {
             logger.error(ServiceConstants.TRANSACTION_FAILED, e);
         }
-        return courseDTO;
+        return courseDto;
     }
 
     @Override
-    public void update(CourseDTO courseDTO) {
-        Course course = Converter.courseDtoToCourse(courseDTO);
+    public void update(CourseDto courseDto) {
+        Course course = Converter.courseDtoToCourse(courseDto);
         try{
             Course actualCourse = courseDAO.getById(course.getId());
+
             if(actualCourse == null){
                 throw new NotFoundException("Course not found!");
             }
@@ -118,62 +118,42 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
-    public List<CourseDTO> findUsersCourse(int id) {
-        List<CourseDTO> courseDTOS = new ArrayList<CourseDTO>();
-        CourseDTO courseDTO = null;
-        if (logger.isDebugEnabled()) {
-            logger.debug(ServiceConstants.TRANSACTION_DEBUG);
-        }
-
+    public List<CourseDto> findUsersCourse(int id) {
+        List<CourseDto> courseDtos = new ArrayList<CourseDto>();
+        CourseDto courseDto = null;
         try {
             List<Course> userCourses = courseDAO.getAllCourseByUserId(id);
-                userCourses = courseDAO.getAll();
+              //  userCourses = courseDAO.getAll();
                 for (Course course : userCourses) {
-                    courseDTO = Converter.courseToCourseDto(course);
-                    courseDTOS.add(courseDTO);
+                    courseDto = Converter.courseToCourseDto(course);
+                    courseDtos.add(courseDto);
                 }
 
                 logger.info(ServiceConstants.TRANSACTION_SUCCEEDED);
             } catch (ServiceException e) {
                 logger.error(ServiceConstants.TRANSACTION_FAILED, e);
             }
-        return courseDTOS;
+        return courseDtos;
         }
-
-
-
-
-
-
-
 
     @Override
-    public void endedCourse(CourseDTO courseDTO) {
-        Course currendCourse = Converter.courseDtoToCourse(courseDTO);
-        try {
-            Course course = courseDAO.getById(courseDTO.getId());
-            if (course == null) {
-                throw new NotFoundException("Course not found!");
-            }
-            courseDAO.endedCourse(currendCourse);
-            logger.info("Course: " + currendCourse + " successfully ended!");
-        } catch (DAOUnException e) {
-            logger.error("Error was thrown in course service method course ended: " + e);
+    public CourseDto getByName(String name) {
+        Course course = null;
+        CourseDto courseDto = null;
+        try{
+            course = courseDAO.getByName(name);
+            if(course != null)
+                courseDto = Converter.courseToCourseDto(course);
+            logger.info(ServiceConstants.TRANSACTION_SUCCEEDED);
+        } catch (ServiceException e) {
+            logger.error(ServiceConstants.TRANSACTION_FAILED, e);
         }
+        return courseDto;
     }
 
-    @Override
-    public void startedCourse(CourseDTO courseDTO) {
-        Course currendCourse = Converter.courseDtoToCourse(courseDTO);
-        try {
-            Course course = courseDAO.getById(currendCourse.getId());
-            if (course == null) {
-                throw new NotFoundException("Course not found");
-            }
-            courseDAO.startedCourse(currendCourse);
-            logger.info("Course: " + currendCourse + " successfully updated!");
-        } catch (DAOUnException e) {
-            logger.error("Error was thrown in course service method course update: " + e);
-        }
+
+
+
+
     }
-}
+

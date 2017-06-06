@@ -13,14 +13,8 @@ public class SheetList extends AbstractEntity {
 
 
     private Acc acc;
-
-
     public Course course;
-
-
     public Integer score;
-
-
     public String shortComment;
 
 
