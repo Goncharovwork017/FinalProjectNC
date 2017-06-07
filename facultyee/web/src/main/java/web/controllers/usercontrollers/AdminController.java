@@ -59,6 +59,7 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
+    //dont work
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public ResponseEntity createUser(@RequestBody UserDto userDto) {
         UserDto user = userService.getByLogin(userDto.getLogin());

@@ -8,7 +8,7 @@ import by.goncharov.nc.dto.dto.SheetListDto;
 public interface ISheetListService extends IService<SheetListDto> {
 
     SheetListDto getAllSheetByUserId(int id);
-    SheetListDto getSheetByCourseIdAndUserId(int courseId, int userId);
+    SheetListDto getSheetByCourseIdAndUserId(int courseId, int userId,int score, int shortcomment);
 
 
 }

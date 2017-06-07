@@ -49,9 +49,10 @@ public class StudentController {
     @RequestMapping(value = "/sheet/read", method = RequestMethod.POST)
     public ResponseEntity createSheet(@RequestBody SheetListDto sheetListDto) {
         int id = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-
+        sheetListDto.setScore(0);
+        sheetListDto.setShortComment(String.valueOf(0));
         sheetListDto.setUser(id);
-        SheetListDto currentList = sheetListService.getSheetByCourseIdAndUserId(sheetListDto.getCourse(),id);
+        SheetListDto currentList = sheetListService.getSheetByCourseIdAndUserId(sheetListDto.getCourse(),id,sheetListDto.getScore(), Integer.parseInt(sheetListDto.getShortComment()));
         CourseDto courseDto = courseService.getById(sheetListDto.getCourse());
 
         if(currentList == null & courseDto.getStatus().equals("STARTED")){

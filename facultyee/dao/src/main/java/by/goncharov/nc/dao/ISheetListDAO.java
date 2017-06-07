@@ -9,7 +9,7 @@ public interface ISheetListDao extends IDao<SheetList> {
 
     SheetList getAllSheetByUserId(int id);
 
-    SheetList getSheetByCourseIdAndUserId(int courseId, int userId);
+    SheetList getSheetByCourseIdAndUserId(int courseId, int userId,int score, int shortcomment);
 
 
 }

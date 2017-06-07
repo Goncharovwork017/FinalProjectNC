@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/student/**").hasRole("STUDENT")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
+               .formLogin()
                 .usernameParameter("login")
                 .permitAll()
                 .and()

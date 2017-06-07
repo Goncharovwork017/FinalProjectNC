@@ -42,13 +42,15 @@ public class SheetListDaoHibernate extends AbstractDAO<SheetList> implements ISh
     }
 
     @Override
-    public SheetList getSheetByCourseIdAndUserId(int courseId, int userId) {
+    public SheetList getSheetByCourseIdAndUserId(int courseId, int userId, int score, int shortcomment) {
         SheetList sheet = null;
         try{
             Session session = getCurrentSession();
             Query query = session.createQuery(Queries.getSheetByCourseIdAndUserId);
             query.setParameter("userid", userId);
             query.setParameter("courseid", courseId);
+            query.setParameter("score",score);
+            query.setParameter("shortcomment",shortcomment);
             sheet = (SheetList) query.uniqueResult();
         } catch (HibernateException e) {
             logger.error("Error was thrown in DAO" + e);

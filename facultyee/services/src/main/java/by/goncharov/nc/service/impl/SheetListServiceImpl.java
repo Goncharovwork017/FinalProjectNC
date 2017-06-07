@@ -141,12 +141,12 @@ public class SheetListServiceImpl implements ISheetListService {
     }
 
     @Override
-    public SheetListDto getSheetByCourseIdAndUserId(int courseId, int userId) {
+    public SheetListDto getSheetByCourseIdAndUserId(int courseId, int userId,int score,int shortcomment) {
         SheetList sheet = null;
         SheetListDto sheetListDto = null;
         try{
 
-            sheet = sheetListDAO.getSheetByCourseIdAndUserId(courseId,userId);
+            sheet = sheetListDAO.getSheetByCourseIdAndUserId(courseId,userId,score,shortcomment);
             if(sheet != null) {
                 sheetListDto = Converter.sheetToSheetDto(sheet);
                 logger.info(ServiceConstants.TRANSACTION_SUCCEEDED);

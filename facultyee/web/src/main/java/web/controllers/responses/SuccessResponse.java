@@ -7,7 +7,6 @@ package web.controllers.responses;
 
 
 public class SuccessResponse {
-    private boolean flag;
     private int id;
     private String httpStatus;
 
@@ -41,11 +40,5 @@ public class SuccessResponse {
     }
 
 
-    public boolean isFlag() {
-        return flag;
-    }
 
-    public void setFlag(boolean flag) {
-        this.flag = flag;
-    }
 }
